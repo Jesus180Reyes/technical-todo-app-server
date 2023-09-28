@@ -1,12 +1,16 @@
 import express, { Application } from 'express';
-
-const cors = require('cors');
+import cors from 'cors';
+import user from '../routes/user/user.routes';
+import todo from '../routes/todo/todo.routes';
+import auth from '../routes/auth/auth.routes';
+import { dbConnection } from '../config/db/dbConnection';
 
 
 export  class Server {
     public paths = {
-        user: "api/v1/user",
-        todo: "api/v1/todo"
+        user: "/api/v1/user",
+        todo: "/api/v1/todo",
+        auth: "/api/v1/auth",
     };
     public app:Application;
     public port:string
@@ -26,7 +30,7 @@ export  class Server {
     }
 
     async conectarDB() {
-        // await dbConnection();
+        await dbConnection();
     }
 
 
@@ -41,25 +45,18 @@ export  class Server {
         // Directorio Público
         this.app.use( express.static('public') );
 
-        // Fileupload - Carga de archivos
-        // this.app.use( fileUpload({
-        //     useTempFiles : true,
-        //     tempFileDir : '/tmp/',
-        //     createParentPath: true
-        // }));
-
     }
 
     routes() {
-        
-        // this.app.use( this.paths.auth, require('../routes/auth'));
-       
-        
+
+        this.app.use( this.paths.user, user);
+        this.app.use( this.paths.todo, todo);
+        this.app.use( this.paths.auth, auth);
     }
 
     listen() {
         this.app.listen( this.port, () => {
-            console.log('Servidor corriendo en puerto', this.port );
+            console.log('Server is running on port', this.port );
         });
     }
 
