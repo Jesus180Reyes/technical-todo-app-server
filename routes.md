@@ -11,8 +11,15 @@
 ### TODO Routes Table
 | Method    | URI  | Action      | File Location |
 |:---------:|:----:|:------------: |:------------: |
-| **GET**   | api/v1/todo        | Get All TODOS          | ./controllers/todo/getTodos         |
-| **GET**   | api/v1/todo/{id}   | Get a TODO by ID       | ./controllers/todo/getTodo          |
-| **POST**  | api/v1/todo        | Create a TODO          | ./controllers/user/createTodo       |
-| **PUT**   | api/v1/todo/{id}   | Update TODO by ID      | ./controllers/user/updateTodoById   |
-| **DELETE**| api/v1/todo/{id}   | Delete a TODO by ID    | ./controllers/user/deleteTodoById   |
+| **GET**   | api/v1/todo          |   Get All TODOS                                         | ./controllers/todo/getTodos         |
+| **GET**   | api/v1/todo/{id}     |   Get a TODO by ID                                      | ./controllers/todo/getTodo          |
+| **GET**   | api/v1/todo/{status} |   Get TODOS by Status {pending,inProgress, done}        | ./controllers/todo/getTodosByStatus |
+| **POST**  | api/v1/todo          |   Create a TODO                                         | ./controllers/user/createTodo       |
+| **PUT**   | api/v1/todo/{id}     |   Update TODO by ID                                     | ./controllers/user/updateTodoById   |
+| **DELETE**| api/v1/todo/{id}     |   Delete a TODO by ID                                   | ./controllers/user/deleteTodoById   |
+
+
+### Auth Routes Table
+| Method    | URI  | Action      | File Location |
+|:---------:|:----:|:------------: |:------------: |
+| **POST**   | api/v1/auth         |   Login User  | ./controllers/auth/authLogin         |
