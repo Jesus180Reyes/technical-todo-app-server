@@ -75,7 +75,7 @@ export const getTodosByStatus = async(req:Request, res:Response) => {
    try {
     const {status} = req.params;
 
-    const todos = await prisma.todos.findMany({where: {status: status}})
+    const todos = await prisma.todos.findMany({where: {status: status,state: true}})
 
     res.json({
         ok: true,
@@ -109,6 +109,32 @@ export const deleteTodoById = async(req:Request, res:Response) => {
         state: false,
     }  
 })
+
+    res.json({
+        ok: true,
+        todos,
+    });
+   
+
+   } catch (error) {
+    return res.status(500).json({
+        ok: false,
+        msg: `Hable con el administrador: ${error} `
+    });
+    
+   }
+}
+export const getTodoByUserId = async(req:Request, res:Response) => {
+   try {
+    const { user_id } = req.params;
+    const isTodoExists = await findStatusById(Number(user_id));
+    if(!isTodoExists) {
+        return res.status(404).json({
+            ok: false,
+            msg: "TODO no existe con este ID"
+        });
+    }
+    const todos = await prisma.todos.findMany({where: {user_id: Number(user_id),state: true}})
 
     res.json({
         ok: true,

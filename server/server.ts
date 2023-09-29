@@ -4,8 +4,9 @@ import user from '../routes/user/user.routes';
 import todo from '../routes/todo/todo.routes';
 import auth from '../routes/auth/auth.routes';
 import { dbConnection } from '../config/db/dbConnection';
+import {config} from 'dotenv';
 
-
+config();
 export  class Server {
     public paths = {
         user: "/api/v1/user",
