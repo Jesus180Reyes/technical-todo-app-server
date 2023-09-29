@@ -14,10 +14,11 @@ router.get("/:status",[
     validateFields
 ],getTodosByStatus);
 
-router.get("/user/:user_id",[
+router.get("/user/:user_id/:status",[
     validarJWT,
     check("user_id", "USER ID  not Valid").isInt(),
     check("user_id", "USER ID is required").not().isEmpty(),
+    check("status", "Status is required").not().isEmpty(),
     validateFields
 
 ],getTodoByUserId);
