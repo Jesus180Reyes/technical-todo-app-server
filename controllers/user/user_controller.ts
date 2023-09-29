@@ -1,8 +1,18 @@
 import {Request, Response} from 'express'
 import { prisma } from '../../config/prisma/prisma_client';
 import bycrypt from 'bcryptjs';
+import { findUserById } from '../../config/helpers/user/findUserById';
 export const getUsers = async(req:Request, res: Response) =>  {
-    const user = await prisma.users.findMany();
+    const user = await prisma.users.findMany({
+        select: {
+            id: true,
+            nombre: true,
+            email: true,
+            todosCompleted: true,
+            state: true,
+            createdAt: true,
+        }
+    });
     res.json({
         ok: true,
         user
@@ -11,7 +21,13 @@ export const getUsers = async(req:Request, res: Response) =>  {
 }
 export const getUserById = async(req:Request, res: Response) =>  {
     const {id} = req.params;
-    const user = await prisma.users.findUnique({where: {id: Number(id)}});
+    const user = await findUserById(Number(id));
+    if(!user) {
+      return  res.status(404).json({
+            ok: true,
+            msg: "Usuario no existe"
+        })
+    }
     res.json({
         ok: true,
         user

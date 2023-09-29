@@ -12,7 +12,7 @@ datasource db {
 model users {
   id             Int      @id @default(autoincrement())
   nombre         String
-  email          String
+  email          String   @unique
   password       String
   state          Boolean? @default(true)
   todosCompleted Int?     @default(0)
