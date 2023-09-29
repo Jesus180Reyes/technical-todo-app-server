@@ -10,9 +10,22 @@ datasource db {
 
 
 model users {
-  id       Int      @id @default(autoincrement())
-  nombre   String
-  email    String
-  password String
-  state    Boolean? @default(true)
+  id             Int      @id @default(autoincrement())
+  nombre         String
+  email          String
+  password       String
+  state          Boolean? @default(true)
+  todosCompleted Int?     @default(0)
+  createdAt      DateTime @default(now())
+}
+
+model todos {
+  id             Int      @id @default(autoincrement())
+  title          String 
+  description    String?  @default("No se asigno description")
+  status         String   @default("Pending")
+  state          Boolean? @default(true)
+  user_id        Int
+  createdAt      DateTime @default(now())
+
 }

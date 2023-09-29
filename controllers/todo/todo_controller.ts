@@ -1,20 +1,38 @@
 import {Request, Response} from 'express'
-export const getTodos = (req:Request, res:Response) => {
+import { prisma } from '../../config/prisma/prisma_client'
+export const getTodos = async(req:Request, res:Response) => {
+    const todos = await prisma.todos.findMany();
     res.json({
         ok: true,
-        msg: "TODOs listed "
+        todos,
     })
 }
-export const getTodo = (req:Request, res:Response) => {
+export const getTodo =  async(req:Request, res:Response) => {
+    const {id} = req.params;
+    const todos = await prisma.todos.findUnique({where: {id: Number(id)}});
+
     res.json({
         ok: true,
-        msg: "TODO listed "
+        todos,
     })
 }
 
-export const postTodo = (req:Request, res:Response) => {
+export const postTodo = async(req:Request, res:Response) => {
+   try {
+    const {body} = req;
+    const todo  = await prisma.todos.create({
+        data: body
+    }) 
     res.json({
         ok: true,
-        msg: "TODO CREATED "
+        msg: "Todo created Succesfully ",
+        todo,
     })
+   } catch (error) {
+    return res.status(500).json({
+        ok: false,
+        msg: `Hable con el administrador: ${error} `
+    });
+    
+   }
 }
