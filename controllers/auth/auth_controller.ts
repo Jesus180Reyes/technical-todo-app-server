@@ -1,6 +1,7 @@
 import {Request, Response} from 'express';
 import { prisma } from '../../config/prisma/prisma_client';
 import bycrypt from 'bcryptjs';
+import {  generateJWT } from '../../config/helpers/jwt/generate_jwt';
 export const authLogin = async(req: Request, res: Response) => {
     const {body} = req;
     const user = await prisma.users.findUnique({
@@ -23,9 +24,11 @@ export const authLogin = async(req: Request, res: Response) => {
             msg: "Password Incorrect"
         });
     }
+    const token = await generateJWT(user.id);
 
     res.json({
         ok: true,
         user,
+        token
     });
 }
