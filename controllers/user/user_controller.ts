@@ -2,6 +2,7 @@ import {Request, Response} from 'express'
 import { prisma } from '../../config/prisma/prisma_client';
 import bycrypt from 'bcryptjs';
 import { findUserById } from '../../config/helpers/user/findUserById';
+import { generateJWT } from '../../config/helpers/jwt/generate_jwt';
 export const getUsers = async(req:Request, res: Response) =>  {
     const user = await prisma.users.findMany({
         select: {
@@ -42,9 +43,11 @@ export const createUser = async(req:Request, res: Response) =>  {
         const user = await prisma.users.create({
         data: body
     });
+    const token = await generateJWT(user.id);
     res.json({
         ok: true,
-        user
+        user,
+        token
     });
     } catch (error) {
         return res.status(500).json({
