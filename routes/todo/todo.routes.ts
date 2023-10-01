@@ -1,6 +1,6 @@
 import { Router } from "express";
 import {check} from 'express-validator';
-import {  deleteTodoById, editTodoStatus, getTodo, getTodoByUserId, getTodos, getTodosByStatus, postTodo } from "../../controllers/todo/todo_controller";
+import {  deleteTodoById, editTodoStatus, getTodo, getTodoByUserId, getTodos, getTodosByStatus, postTodo, updateTodoById } from "../../controllers/todo/todo_controller";
 import { validateFields } from "../../config/middlewares/validate_fields";
 import { validarJWT } from "../../config/middlewares/validate_jwt";
 
@@ -43,6 +43,18 @@ router.put("/",[
     check("status", "Status is required").not().isEmpty(),
     validateFields
 ],editTodoStatus);
+
+
+router.put("/:id",[
+    validarJWT,
+    check("id", "ID not valid").isInt(),
+    check("id", "ID is required").not().isEmpty(),
+    check("title", "Title is required").not().isEmpty(),
+    check("title", "Title not valid").isString(),
+    check("description", "Description is required").not().isEmpty(),
+    check("description", "Description not valid").isString(),
+    validateFields
+],updateTodoById);
 
 router.delete("/:id",[
     validarJWT,

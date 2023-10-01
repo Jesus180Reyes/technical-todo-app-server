@@ -155,3 +155,40 @@ export const getTodoByUserId = async(req:Request, res:Response) => {
     
    }
 }
+
+export const updateTodoById = async(req:Request, res:Response) => {
+   try {
+    const { id } = req.params;
+    const { title, description } = req.body;
+    const isTodoExists = await findStatusById(Number(id));
+    if(!isTodoExists) {
+        return res.status(404).json({
+            ok: false,
+            msg: "TODO no existe con este ID"
+        });
+    }
+    const todos = await prisma.todos.update({where: {id: Number(id)},
+    data: {
+        title: title,
+        description: description,
+    }
+});
+        
+
+    res.json({
+        ok: true,
+        msg: "TODO Updated Succesfully",
+        todos,
+    });
+   
+
+   } catch (error) {
+    return res.status(500).json({
+        ok: false,
+        msg: `Hable con el administrador: ${error} `
+    });
+    
+   }
+}
+
+
